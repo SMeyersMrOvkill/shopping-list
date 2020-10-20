@@ -1,7 +1,7 @@
 /**
  * Our store. Has all of the initial variables for the code.
  */
-let store = [
+const store = [
   { name: 'apples', completed: false },
   { name: 'oranges', completed: false },
   { name: 'milk', completed: false },
