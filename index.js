@@ -91,7 +91,7 @@ function handleDeleteItemClicked(evt) {
 /**
  * Links all of the functions previously listed in this document into their correct event handlers.
  */
-$(function(){
+$(() =>{
     // Register the add item event handler.
     $('#js-shopping-list-form').submit(handleNewItemSubmit);
 
