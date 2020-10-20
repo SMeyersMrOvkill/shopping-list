@@ -50,7 +50,7 @@ function renderShoppingList() {
  * @see renderShoppingList
  * @param {Event} evt 
  */
-function handleShoppingItemAdd(evt) {
+function handleNewItemSubmit(evt) {
   evt.preventDefault();
   const listItem = $('#shopping-list-entry').val();
   $('#shopping-list-entry').val('');
@@ -64,7 +64,7 @@ function handleShoppingItemAdd(evt) {
  * @see renderShoppingList
  * @param {Event} evt 
  */
-function handleShoppingItemToggle(evt) {
+function handleItemCheckClicked(evt) {
   let name = $(this).closest('li').find('.shopping-item').html();
   for(let item of store) {
     if(item.name == name) {
@@ -80,7 +80,7 @@ function handleShoppingItemToggle(evt) {
  * @see renderShoppingList
  * @param {Event} evt 
  */
-function handleShoppingItemRemove(evt) {
+function handleDeleteItemClicked(evt) {
   let name = $(this).closest('li').find('.shopping-item').html();
   store = store.filter(function(itm) {
     return itm.name !== name;
@@ -93,16 +93,16 @@ function handleShoppingItemRemove(evt) {
  */
 $(function(){
     // Register the add item event handler.
-    $('#js-shopping-list-form').submit(handleShoppingItemAdd);
+    $('#js-shopping-list-form').submit(handleNewItemSubmit);
 
     // Ensure out entry field is blank so we can see our lovely placeholder.
     $('#shopping-list-entry').val('');
   
     // Register the delete item event handler.
-    $('.shopping-list').on('click', '.shopping-item-delete', handleShoppingItemRemove);
+    $('.shopping-list').on('click', '.shopping-item-delete', handleDeleteItemClicked);
   
     // Register the checked item event handler.
-    $('.shopping-list').on('click', '.shopping-item-toggle', handleShoppingItemToggle);
+    $('.shopping-list').on('click', '.shopping-item-toggle', handleItemCheckClicked);
 
     // Render our list so the user can see it when the page loads.
     renderShoppingList();
