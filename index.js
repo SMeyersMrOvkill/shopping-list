@@ -1,7 +1,7 @@
 /**
  * Our store. Has all of the initial variables for the code.
  */
-const store = [
+const STORE = [
   { name: 'apples', completed: false },
   { name: 'oranges', completed: false },
   { name: 'milk', completed: false },
@@ -33,19 +33,12 @@ function generateItemElement(item) {
   return code;
 }
 
-function generateShoppingItemsString(shoppingList) {
-  const items = shoppingList.map((item, index) => {
-    generateItemElement(item, index);
-  });
-  return items.join("");
-}
-
 /**
  * Calls the render function for the entire list of items, then inserts it into the document.
  */
 function renderShoppingList() {
   let html = '';
-  for (let item of store) {
+  for (let item of STORE) {
     html += generateItemElement(item);
   }
   $('.shopping-list').html(html);
@@ -61,7 +54,7 @@ function handleNewItemSubmit(evt) {
   evt.preventDefault();
   const listItem = $('#shopping-list-entry').val();
   $('#shopping-list-entry').val('');
-  store.push({ name: listItem, completed: false });
+  STORE.push({ name: listItem, completed: false });
   renderShoppingList();
 }
 
@@ -73,7 +66,7 @@ function handleNewItemSubmit(evt) {
  */
 function handleItemCheckClicked(evt) {
   let name = $(this).closest('li').find('.shopping-item').html();
-  for (let item of store) {
+  for (let item of STORE) {
     if (item.name == name) {
       item.completed = !item.completed;
     }
@@ -89,10 +82,10 @@ function handleItemCheckClicked(evt) {
  */
 function handleDeleteItemClicked(evt) {
   let name = $(this).closest('li').find('.shopping-item').html();
-  const index = store.findIndex((item) => {
+  const index = STORE.findIndex((item) => {
     return item.name == name;
   });
-  store.splice(index, 1);
+  STORE.splice(index, 1);
   renderShoppingList();
 }
 
