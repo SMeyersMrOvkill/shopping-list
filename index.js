@@ -2,10 +2,10 @@
  * Our store. Has all of the initial variables for the code.
  */
 const STORE = [
-  { name: 'apples', completed: false },
-  { name: 'oranges', completed: false },
-  { name: 'milk', completed: false },
-  { name: 'bread', completed: false }
+  { id: cuid(), name: 'apples', completed: false },
+  { id: cuid(), name: 'oranges', completed: false },
+  { id: cuid(), name: 'milk', completed: false },
+  { id: cuid(), name: 'bread', completed: false }
 ];
 
 /**
@@ -14,7 +14,7 @@ const STORE = [
  * @param {object} item 
  */
 function generateItemElement(item) {
-  let code = `<li>
+  let code = `<li data-item-id="${item.id}">
   <span class="shopping-item `;
   // Adds in the item checked class if the item has been completed, otherwise does nothing.
   if (item.completed) {
@@ -54,8 +54,12 @@ function handleNewItemSubmit(evt) {
   evt.preventDefault();
   const listItem = $('#shopping-list-entry').val();
   $('#shopping-list-entry').val('');
-  STORE.push({ name: listItem, completed: false });
+  STORE.push({ id: cuid(), name: listItem, completed: false });
   renderShoppingList();
+}
+
+function checkItem(id) {
+  
 }
 
 /**
@@ -65,9 +69,9 @@ function handleNewItemSubmit(evt) {
  * @param {Event} evt 
  */
 function handleItemCheckClicked(evt) {
-  let name = $(this).closest('li').find('.shopping-item').html();
+  let id = $(this).closest('li').data('item-id');
   for (let item of STORE) {
-    if (item.name == name) {
+    if (item.id == id) {
       item.completed = !item.completed;
     }
   }
