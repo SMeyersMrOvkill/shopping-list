@@ -2,10 +2,10 @@
  * Our store. Has all of the initial variables for the code.
  */
 let store = [
-  {name: 'apples', completed: false},
-  {name: 'oranges', completed: false},
-  {name: 'milk', completed: false},
-  {name: 'bread', completed: false}
+  { name: 'apples', completed: false },
+  { name: 'oranges', completed: false },
+  { name: 'milk', completed: false },
+  { name: 'bread', completed: false }
 ];
 
 /**
@@ -13,11 +13,11 @@ let store = [
  * 
  * @param {object} item 
  */
-function generateListItem(item) {
+function generateItemElement(item) {
   let code = `<li>
   <span class="shopping-item `;
   // Adds in the item checked class if the item has been completed, otherwise does nothing.
-  if(item.completed) {
+  if (item.completed) {
     code += 'shopping-item__checked';
   }
   code += `">${item.name}</span>
@@ -33,13 +33,20 @@ function generateListItem(item) {
   return code;
 }
 
+function generateShoppingItemsString(shoppingList) {
+  const items = shoppingList.map((item, index) => {
+    generateItemElement(item, index);
+  });
+  return items.join("");
+}
+
 /**
  * Calls the render function for the entire list of items, then inserts it into the document.
  */
 function renderShoppingList() {
   let html = '';
-  for(let item of store) {
-    html += generateListItem(item);
+  for (let item of store) {
+    html += generateItemElement(item);
   }
   $('.shopping-list').html(html);
 }
@@ -54,7 +61,7 @@ function handleNewItemSubmit(evt) {
   evt.preventDefault();
   const listItem = $('#shopping-list-entry').val();
   $('#shopping-list-entry').val('');
-  store.push({name:listItem, completed: false});
+  store.push({ name: listItem, completed: false });
   renderShoppingList();
 }
 
@@ -66,8 +73,8 @@ function handleNewItemSubmit(evt) {
  */
 function handleItemCheckClicked(evt) {
   let name = $(this).closest('li').find('.shopping-item').html();
-  for(let item of store) {
-    if(item.name == name) {
+  for (let item of store) {
+    if (item.name == name) {
       item.completed = !item.completed;
     }
   }
@@ -82,28 +89,29 @@ function handleItemCheckClicked(evt) {
  */
 function handleDeleteItemClicked(evt) {
   let name = $(this).closest('li').find('.shopping-item').html();
-  store = store.filter(function(itm) {
-    return itm.name !== name;
+  const index = store.findIndex((item) => {
+    return item.name == name;
   });
+  store.splice(index, 1);
   renderShoppingList();
 }
 
 /**
  * Links all of the functions previously listed in this document into their correct event handlers.
  */
-$(() =>{
-    // Register the add item event handler.
-    $('#js-shopping-list-form').submit(handleNewItemSubmit);
+$(() => {
+  // Register the add item event handler.
+  $('#js-shopping-list-form').submit(handleNewItemSubmit);
 
-    // Ensure out entry field is blank so we can see our lovely placeholder.
-    $('#shopping-list-entry').val('');
-  
-    // Register the delete item event handler.
-    $('.shopping-list').on('click', '.shopping-item-delete', handleDeleteItemClicked);
-  
-    // Register the checked item event handler.
-    $('.shopping-list').on('click', '.shopping-item-toggle', handleItemCheckClicked);
+  // Ensure out entry field is blank so we can see our lovely placeholder.
+  $('#shopping-list-entry').val('');
 
-    // Render our list so the user can see it when the page loads.
-    renderShoppingList();
-  });
+  // Register the delete item event handler.
+  $('.shopping-list').on('click', '.shopping-item-delete', handleDeleteItemClicked);
+
+  // Register the checked item event handler.
+  $('.shopping-list').on('click', '.shopping-item-toggle', handleItemCheckClicked);
+
+  // Render our list so the user can see it when the page loads.
+  renderShoppingList();
+});
